@@ -15,4 +15,4 @@ You can create the same conda environment I used during this project. You just n
 
 
 ## Reproduce my submission.csv file
-Just use `python run.py --pretrain` This script will use my pretrain model on the dataset contained in the `dataset folder`, then executed the pretrained model on the test set, generate the results (groundtruth of the images of the test set) and from these results will create the submission.csv file.
+Just use `python run.py --pretrain` This script will use my pretrain model on the dataset contained in the `dataset folder`, then executed the pretrained model on the test set, generate the results (groundtruth of the images of the test set) and from these results will create the `submission.csv` file.
