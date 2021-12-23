@@ -1,5 +1,8 @@
 # Project 2 Machine Learning: Road map segmentation
 
+## Instruction about the framework used in this project
+You can create the same conda environment I used during this project. You just need to type: `conda env create -f environment.yml`.
+
 ## Information about the folders and files
 - The folder `dataset` contains the dataset (satellite images with their corresponding groundtruth).
 - The folder `models` contains the pretrain model that generated the submission.csv file
