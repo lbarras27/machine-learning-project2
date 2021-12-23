@@ -12,6 +12,7 @@ You can create the same conda environment I used during this project. You just n
 - `train2.py` is the file containing the function train (to train the network), accuracy and f1score (to test the score on the validation test).
 - `util.py` contains useful functions that help to impement the other files.
 - `run.py`is the file that allow to reproduce the same results that I had. More details on it on the next section.
+- `Example.ipynb` show an example how to use the different tools I implemented.
 
 
 ## Reproduce my submission.csv file
