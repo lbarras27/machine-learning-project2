@@ -30,7 +30,10 @@ from sklearn.metrics import f1_score
     @param optimizer: the optimizer used during the training
     @param epoch: the number of iterations
     @param device: the corresponding device (cpu or cuda)
+    @param lambda1: hyperparameter for the mask loss
+    @param lambda2: hyperparameter for the batch loss
     @param verbose: if True, print the loss error
+    @param mode_patch: if True, generate the second output of the model (patch) and use it in the loss function to train
 """
 def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, verbose=True, mode_patch=True):
     model.train()

@@ -82,7 +82,9 @@ class BlockConvTranspose2d(nn.Module):
         return x
 
 
-        
+"""
+    The Unet network I used to generate the results. More details in the Report 
+"""
 class Unet(nn.Module):
     def __init__(self, mode_patch=True):
         super(Unet, self).__init__()
