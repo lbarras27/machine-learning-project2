@@ -196,7 +196,10 @@ def convert_patch_to_mask(output_path, patchs_test, model, device):
 def generate_groundtruth_test_set(patchs_test, model, device, output_path='results/resC'):
     num_patch = 4 # (2x2)
     for k in range(0, 50):
-        res, _ = model(patchs_test[k*num_patch:(k+1)*num_patch].to(device))
+        if model.mode_patch:
+            res, _ = model(patchs_test[k*num_patch:(k+1)*num_patch].to(device))
+        else:
+            res = model(patchs_test[k*num_patch:(k+1)*num_patch].to(device))
         
         res[res < 0.5] = 0
         res[res >= 0.5] = 255

@@ -2,24 +2,6 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import f1_score
 
-####### For the first model #############
-#def train2(model, e, input, label, val_input, val_label, optimizer, mini_batch_size):
-#    model.train()
-#    sum_loss = 0
-#    criterion = nn.BCELoss()
-#    for b in range(0, input.size(0), mini_batch_size):
-#        optimizer.zero_grad()
-#        output = model(input.narrow(0, b, mini_batch_size).to(device))
-        
-#        loss = criterion(output, label.narrow(0, b, mini_batch_size).to(device))
-
-#        sum_loss = sum_loss + loss.item()
-        
-#        loss.backward()
-#        optimizer.step()
-
-#    print(e, sum_loss, loss)
-    
 
 """
     train the model with data that is generate with the dataloader and optimize with the 
@@ -33,9 +15,8 @@ from sklearn.metrics import f1_score
     @param lambda1: hyperparameter for the mask loss
     @param lambda2: hyperparameter for the batch loss
     @param verbose: if True, print the loss error
-    @param mode_patch: if True, generate the second output of the model (patch) and use it in the loss function to train
 """
-def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, verbose=True, mode_patch=True):
+def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, verbose=True):
     model.train()
     criterion = nn.BCELoss()
     
@@ -44,14 +25,14 @@ def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, ver
         for data, label in dataloader:
             optimizer.zero_grad()
             
-            if mode_patch:
+            if model.mode_patch:
                 output, out_patch = model(data.to(device))
             else:
                 output = model(data.to(device))
             
             loss_mask = criterion(output, label.to(device))
             
-            if mode_patch:
+            if model.mode_patch:
                 # transform the groundtruth in patches of 16x16 pixels
                 batch_label = label[:, 0]
                 patch_label = batch_label.unfold(1, 16, 16).unfold(2, 16, 16).mean((3, 4))[:, None]
@@ -61,7 +42,7 @@ def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, ver
                 # objective loss: compare the 16x16 patches
                 loss_batch = criterion(out_patch, patch_label.to(device))
             
-            if mode_patch:
+            if model.mode_patch:
                 loss = lambda1 * loss_mask + lambda2 * loss_batch
             else:
                 loss = loss_mask
@@ -72,7 +53,7 @@ def train(dataloader, model, optimizer, epoch, device, lambda1=1, lambda2=1, ver
             optimizer.step()
         
         if verbose:
-            print(e, sum_loss)
+            print("Epoch:", e, "| Loss:", sum_loss)
     
     
 """
@@ -90,7 +71,11 @@ def accuracy(model, dataloader, device):
         sum = 0
         num_batch = 0
         for data, label in dataloader:
-            res, patch = model(data.to(device))
+            
+            if model.mode_patch:
+                res, _ = model(data.to(device))
+            else:
+                res = model(data.to(device))
             res[res < 0.5] = 0
             res[res >= 0.5] = 1
             label[label < 0.5] = 0
@@ -119,7 +104,11 @@ def f1score(model, dataloader, device):
         score = 0
         num_batch = 0
         for data, label in dataloader:
-            res, patch = model(data.to(device))
+            
+            if model.mode_patch:
+                res, _ = model(data.to(device))
+            else:
+                res = model(data.to(device))
             res[res < 0.5] = 0
             res[res >= 0.5] = 1
             label[label < 0.5] = 0

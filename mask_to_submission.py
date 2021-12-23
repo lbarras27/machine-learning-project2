@@ -37,10 +37,10 @@ def masks_to_submission(submission_filename, *image_filenames):
 
 
 if __name__ == '__main__':
-    submission_filename = 'dummy_submission11.csv'
+    submission_filename = 'dummy_submission15.csv'
     image_filenames = []
     for i in range(1, 51):
-        image_filename = 'results/res/satImage_' + '%.3d' % i + '.png'
+        image_filename = 'results/resM/satImage_' + '%.3d' % i + '.png'
         print(image_filename)
         image_filenames.append(image_filename)
     masks_to_submission(submission_filename, *image_filenames)

@@ -21,9 +21,9 @@ print('Device used:', device)
 
 
 
-path_model = "models/Unet3_final_all_e1000.pt"
+path_model = "models/Unet_950epoch.pt"
 train_path = "dataset/training/images"
-label_path = "dataset/training/groundtruth_mod"
+label_path = "dataset/training/groundtruth"
 test_path = "dataset/test_set/test_imgs"
 
 parser = argparse.ArgumentParser()
@@ -35,7 +35,7 @@ parser.add_argument('-o', '--output', help="Directory that will contain the resu
 parser.add_argument('-b', '--batch_size', type=int, help="The batch size")
 args = parser.parse_args()
 
-out_path = args.output if args.output else "results/resC"
+out_path = args.output if args.output else "results/res"
 train_mode = args.train
 pretrained = args.pretrain
 

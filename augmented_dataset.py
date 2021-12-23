@@ -34,6 +34,7 @@ class AugmentedDataset(Dataset):
         
         image = Image.open(file_path_data)
         label = Image.open(file_path_label)
+        label = label.convert("L")
 
         if self.is_transform:
             image, label = self.transform(image, label)
@@ -65,5 +66,7 @@ class AugmentedDataset(Dataset):
         # Transform to tensor
         image = TF.to_tensor(image)
         mask = TF.to_tensor(mask)
+        mask[mask < 0.5] = 0.
+        mask[mask >= 0.5] = 1.
         
         return image, mask
